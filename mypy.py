@@ -7,6 +7,7 @@ import pyttsx3
 import sys
 from PIL import Image
 from main_project import SRec
+from get_pictures import flickr_search
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton,
                                 QLineEdit, QComboBox, QHBoxLayout, QVBoxLayout)
 from PyQt5.QtCore import pyqtSlot
@@ -95,7 +96,7 @@ class Window(QWidget):
         engine.runAndWait()
         someText = SRec() # Runs main_project.py and returns the text from voice recognition to "someText"
         tags = someText.split() # To refine search, words will be split into tags.
-
+        flickr_search(someText)
         for word in tags:
             print(word)
         #print("Here are some images of: " + someText)
