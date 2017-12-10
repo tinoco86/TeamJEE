@@ -16,3 +16,6 @@ def flickr_search(query):
     #for photo in data['photos']:
     #    print (data['photo']['id'])
     print (data)
+
+
+flickr_search("Monterey")
