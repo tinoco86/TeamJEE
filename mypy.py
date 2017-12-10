@@ -1,8 +1,7 @@
-#Final: Team Project    #Professor Avner Biblarz     #CST 205     #Homework 4
+#Final: Team JEE SEARCH IMAGE Project    
+#Professor Avner Biblarz  
+#CST 205     
 #BY: Evert Rodriguez, Jessica Jimenez, and Eric Tinoco
-
-#Objective 1:
-#Objective 2:
 # The Program will run through a GUI. When The GUI appears the user will be asked “What Image would you like to search for?” with audio. 
 #The user will speak to the GUI to search for the image. The GUI will get the users speech input and transform it into a text. 
 #The text will be used to search for the image using flicker. 
@@ -18,6 +17,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton,
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QPixmap
 #-------------text to speech start---------------
+# Gets the user audio input and trasforms it into txt. 
 #engine = pyttsx3.init()
 #rate = engine.getProperty('rate')
 #engine.setProperty('rate', rate-450)
@@ -62,7 +62,8 @@ class Window(QWidget):
         h_layout3 = QHBoxLayout()
         h_layout3.addWidget(self.search_button)
         #h_layout3.addWidget(self.response_label)
-
+        
+        #Displays images 1,2 and 3 in GUI
         h_layout4 = QHBoxLayout()
         h_layout4.addWidget(self.resetLabel1)
         h_layout4.addWidget(self.resetLabel2)
