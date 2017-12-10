@@ -1,3 +1,8 @@
+# The Program will run through a GUI. When The GUI appears the user will be asked “What Image would you like to search for?” with audio. 
+#The user will speak to the GUI to search for the image. The GUI will get the users speech input and transform it into a text. 
+#The text will be used to search for the image using flicker. 
+
+
 import requests
 import json
 import random
