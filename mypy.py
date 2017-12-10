@@ -5,19 +5,22 @@
 #Objective 2:
 import pyttsx3
 import sys
+import requests
+import urllib.request
 from PIL import Image
 from main_project import SRec
+from get_pictures import flickr_search
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton,
                                 QLineEdit, QComboBox, QHBoxLayout, QVBoxLayout)
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QPixmap
 #-------------text to speech start---------------
-engine = pyttsx3.init()
-rate = engine.getProperty('rate')
-engine.setProperty('rate', rate-450)
-voices = engine.getProperty('voices')
-for voice in voices:
-   engine.setProperty('voice', voice.id)
+#engine = pyttsx3.init()
+#rate = engine.getProperty('rate')
+#engine.setProperty('rate', rate-450)
+#voices = engine.getProperty('voices')
+#for voice in voices:
+#   engine.setProperty('voice', voice.id)
 #-------------text to speech end---------------
 class Window(QWidget):
     def __init__(self):
@@ -26,20 +29,19 @@ class Window(QWidget):
 
     def init_ui(self):
         # To hold each image
-        # p1 = QPixmap("")
-        # p2 = QPixmap("")
-        # p3 = QPixmap("")
+        p1 = QPixmap(" ")
+        p2 = QPixmap(" ")
+        p3 = QPixmap(" ")
         # p4 = QPixmap("")
         # p5 = QPixmap("")
         # p6 = QPixmap("")
         # p7 = QPixmap("")
         # p8 = QPixmap("")
         # p9 = QPixmap("")
-
-
-        #picture = QPixmap(" ")
         #self.resetLabel = None
-        #self.resetLabel = QLabel()
+        self.resetLabel1 = QLabel()
+        self.resetLabel2 = QLabel()
+        self.resetLabel3 = QLabel()
 
         #self.picture_label = QLabel("Image Name: ", self)
         #self.my_line_edit = QLineEdit(self)
@@ -63,9 +65,13 @@ class Window(QWidget):
         h_layout3.addWidget(self.search_button)
         #h_layout3.addWidget(self.response_label)
 
-        #h_layout4 = QHBoxLayout()
-        #h_layout4.addWidget(self.resetLabel)
-        #self.resetLabel.setPixmap(picture)
+        h_layout4 = QHBoxLayout()
+        h_layout4.addWidget(self.resetLabel1)
+        h_layout4.addWidget(self.resetLabel2)
+        h_layout4.addWidget(self.resetLabel3)
+        self.resetLabel1.setPixmap(p1)
+        self.resetLabel2.setPixmap(p2)
+        self.resetLabel3.setPixmap(p3)
 
         global v_layout
         v_layout = QVBoxLayout()
@@ -73,7 +79,7 @@ class Window(QWidget):
         #v_layout.addLayout(h_layout1)
         #v_layout.addLayout(h_layout2)
         v_layout.addLayout(h_layout3)
-        #v_layout.addLayout(h_layout4)
+        v_layout.addLayout(h_layout4)
 
         # Sets all of the layouts
         self.setLayout(v_layout)
@@ -91,18 +97,50 @@ class Window(QWidget):
     # on_click goes to here
     @pyqtSlot()
     def on_click(self):
-        engine.say('What would you like to search for?')
-        engine.runAndWait()
+        #engine.say('What would you like to search for?')
+        #engine.runAndWait()
         someText = SRec() # Runs main_project.py and returns the text from voice recognition to "someText"
-        tags = someText.split() # To refine search, words will be split into tags.
+        link1 = flickr_search(someText)
+        link2 = flickr_search(someText)
+        link3 = flickr_search(someText)
+        print(someText)
+        pic1 = ""
+        pic2 = ""
+        pic3 = ""
+        for i in range(1, 4):
+            #print(i)
+            if i == 1:
+                with urllib.request.urlopen(link1) as url:
+                    with open('temp.jpg','wb') as f:
+                        f.write(url.read())
+                pic1 = QPixmap('temp.jpg')
+            elif i == 2:
+                with urllib.request.urlopen(link2) as url:
+                    with open('temp.jpg','wb') as f:
+                        f.write(url.read())
+                pic2 = QPixmap('temp.jpg')
+            elif i == 3:
+                with urllib.request.urlopen(link3) as url:
+                    with open('temp.jpg','wb') as f:
+                        f.write(url.read())
+                pic3 = QPixmap('temp.jpg')
+        self.update_img(pic1, pic2, pic3)
+        #img = Image.open('temp.jpg')
+        #img.show()
+        #self.update_img(img)
 
-        for word in tags:
-            print(word)
+        #print(url)
+        #for word in tags:
+        #    print(word)
         #print("Here are some images of: " + someText)
 
-    # Anything needing updating goes here. After each search phrase, the images will update here
-    #@pyqtSlot()
-    #def update_img(self, picture):
+
+    #Anything needing updating goes here. After each search phrase, the images will update here
+    @pyqtSlot()
+    def update_img(self, picture1, picture2, picture3):
+        self.resetLabel1.setPixmap(picture1)
+        self.resetLabel2.setPixmap(picture2)
+        self.resetLabel3.setPixmap(picture3)
 
 app = QApplication(sys.argv)
 main = Window()
